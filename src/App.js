@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SpotifyWebApi from "spotify-web-api-js";
 import './App.css';
 import { useDataLayerValue } from './DataLayer';
+import Download from './Download';
 import Login from './Login';
 import { getTokenFromUrl } from './spotify';
 
@@ -9,7 +10,7 @@ const spotify = new SpotifyWebApi();
 
 function App() {
   const [{ token }, dispatch] = useDataLayerValue();
-  const [other_user, setOtherUser] = useState("d3miwarrior");
+  const [other_user, setOtherUser] = useState ("d3miwarrior");
 
   useEffect(() => {
     // Set token
@@ -34,10 +35,10 @@ function App() {
 
       spotify.getUserPlaylists(other_user)
         .then(function (data) {
-          dispatch({
-            type: "SET_OTHER_USER_PLAYLISTS",
-            other_user,
-          })
+          // dispatch({
+          //   type: "SET_OTHER_USER_PLAYLISTS",
+          //   other_user,
+          // });
           console.log('Retrieved playlists', data);
         },function(err) {
           console.log('Something went wrong!', err);
@@ -62,10 +63,11 @@ function App() {
         })
       );
     }
-  }, [token,dispatch]);
+  }, [token, dispatch]);
   return (
     <div className="app">
-      <Login />
+      {!token && <Login />}
+      {token && <Download />}
 
     </div>
   );

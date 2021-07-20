@@ -1,4 +1,4 @@
-import { findAllByDisplayValue } from "@testing-library/react";
+
 
 export const initialState = {
     user: null,
@@ -7,7 +7,7 @@ export const initialState = {
     otherUser: null,
     otherUserPlaylists: [],
     // remove after debuging
-    token: 'BQDMuwuSXOO-c5G61FI_HHEt9lI6AanypwRPFixL03cUeNOFiwx3qbtYlAQpk2PPl4tOzUzAJBf1Itv9jXJx-YZ8F8q_DcTJb1jfehbRHWZ7Xj1MNp2bjgPLjee9ooh4RH03i6PGZZjyKYFL8ULddKWiK4m6RZs6PSlC0teQLzh8zqZo'
+    // token: 'BQDMuwuSXOO-c5G61FI_HHEt9lI6AanypwRPFixL03cUeNOFiwx3qbtYlAQpk2PPl4tOzUzAJBf1Itv9jXJx-YZ8F8q_DcTJb1jfehbRHWZ7Xj1MNp2bjgPLjee9ooh4RH03i6PGZZjyKYFL8ULddKWiK4m6RZs6PSlC0teQLzh8zqZo'
 };
 
 const reducer = (state, action) => {
