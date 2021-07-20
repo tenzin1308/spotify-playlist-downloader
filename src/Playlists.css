@@ -1,0 +1,22 @@
+.playLists {
+  margin-left: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  color: black;
+}
+
+.playLists:hover {
+  cursor: pointer;
+  background-color: #ccc;
+  opacity: 0.8;
+}
+
+.playLists__info {
+  margin-left: 20px;
+}
+
+.playLists__info > h1 {
+  font-size: 16px;
+}

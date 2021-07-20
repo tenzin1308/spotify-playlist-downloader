@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import SpotifyWebApi from "spotify-web-api-js";
-import './App.css';
-import { useDataLayerValue } from './DataLayer';
-import Download from './Download';
-import Login from './Login';
-import { getTokenFromUrl } from './spotify';
+import React, { useState, useEffect } from 'react'
+import SpotifyWebApi from "spotify-web-api-js"
+import './App.css'
+import { useDataLayerValue } from './DataLayer'
+import Downloader from './Downloader'
+import Login from './Login'
+import { getTokenFromUrl } from './spotify'
 
 const spotify = new SpotifyWebApi();
 
@@ -64,10 +64,11 @@ function App() {
       );
     }
   }, [token, dispatch]);
+  
   return (
     <div className="app">
       {!token && <Login />}
-      {token && <Download />}
+      {token && <Downloader spotify={spotify} />}
 
     </div>
   );
