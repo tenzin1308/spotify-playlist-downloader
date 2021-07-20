@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import SpotifyWebApi from "spotify-web-api-js";
 import './App.css';
 import { useDataLayerValue } from './DataLayer';
@@ -9,6 +9,7 @@ const spotify = new SpotifyWebApi();
 
 function App() {
   const [{ token }, dispatch] = useDataLayerValue();
+  const [other_user, setOtherUser] = useState("d3miwarrior");
 
   useEffect(() => {
     // Set token
@@ -17,13 +18,43 @@ function App() {
     let _token = hash.access_token;
 
     if (_token) {
+
+      console.log(_token);
+      
       spotify.setAccessToken(_token);
 
       dispatch({
         type: "SET_TOKEN",
         token: _token,
       });
+      dispatch({
+        type: "SET_SPOTIFY",
+        spotify: spotify,
+      });
 
+      spotify.getUserPlaylists(other_user)
+        .then(function (data) {
+          dispatch({
+            type: "SET_OTHER_USER_PLAYLISTS",
+            other_user,
+          })
+          console.log('Retrieved playlists', data);
+        },function(err) {
+          console.log('Something went wrong!', err);
+        });
+      
+      spotify.getMe().then((user) => {
+        dispatch({
+          type: "SET_USER",
+          user,
+        });
+      });
+      spotify.getUserPlaylists().then((playlists) => {
+        dispatch({
+          type: "SET_PLAYLISTS",
+          playlists,
+        });
+      });
       spotify.getPlaylist("2ILLL6Ep7x6ahuHoSHvptu").then((response) =>
         dispatch({
           type: "SET_DISCOVER_WEEKLY",
@@ -31,7 +62,7 @@ function App() {
         })
       );
     }
-  }, [token, dispatch]);
+  }, [token,dispatch]);
   return (
     <div className="app">
       <Login />
