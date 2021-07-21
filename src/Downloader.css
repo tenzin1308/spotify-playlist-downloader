@@ -1,0 +1,16 @@
+.download {
+  display: grid;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.downloader__header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vh;
+}
+
+.downloader__header > h1 {
+}

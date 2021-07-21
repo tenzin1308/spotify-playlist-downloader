@@ -10,12 +10,12 @@ function Downloader({ spotify }) {
 
     return (
         <div className="downloader" >
-            <h4 className="downloader__header">
+            <h1 className="downloader__header">
                 Select the Playlist you would like to download.
-            </h4>
+            </h1>
             <br />
-            {playlists?.items?.map((playlist) => (
-                <Playlists title={playlist.name} />
+            {playlists?.items?.map((playlist, index) => (
+                <Playlists images={playlist.images} title={playlist.name} id={playlist.id} key={index}/>
 
             ))}
         </div>
