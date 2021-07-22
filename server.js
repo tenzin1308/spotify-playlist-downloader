@@ -4,6 +4,9 @@ var cors = require('cors')
 var multer = require('multer');
 var upload = multer();
 
+// python script requirment
+const { spawn } = require('child_process');
+
 
 const app = express(); 
 const port = process.env.PORT || 5000;
@@ -36,36 +39,33 @@ app.post('/Mr-Logger', (request, response) => {
       response.end();
       return
     }
-    response.writeHead(200);
-    response.write('received');
-    response.end();
-    return
+    
+    const pyScript = spawn('python3', ['/Users/tenzintashi/Colz/Coding Files/spotify-playlist-downloader/python/downloader.py']);
+
+    pyScript.stdout.on('data', (data) => {
+      console.log(`code successfully executed`);
+      // response.writeHead(200);
+      // response.write('received');
+      response.end();
+      return
+        // console.log("data from getStat routs =>", data);
+        // res.json(JSON.stringify(data));
+    });
+
+    pyScript.stderr.on('data', (data) => {
+      console.log(`stderr: ${data}`);
+      return
+    });
+
+    pyScript.on('close', (code) => {
+      console.log(`Exited with code: ${code}`);
+      return
+    });
+    
   })
 })
 
-function downloader(req, res) {
-  // Use child_process.spawn method from
-  // child_process module and assign it
-  // to variable spawn
-  var spawn = require("child_process").spawn;
-  
-  // Parameters passed in spawn -
-  // 1. type_of_script
-  // 2. list containing Path of the script
-  //    and arguments for the script 
-  
-  // E.g : http://localhost:5000/start_download?song=CallMeByYourName&artists=Montero
-  // so, song = Call Me By Your Name and artists = Montero
-  var process = spawn('python3.9',["/Users/tenzintashi/Colz/Coding Files/spotify-playlist-downloader/python/downloader.py",
-  req.query.song,
-  req.query.artists] );
-  
-  // Takes stdout data from script which executed
-  // with arguments and send this data to res object
-  process.stdout.on('data', function(data) {
-    res.send(data.toString());
-  } )
-} 
+
 
 // create a GET route
 app.get('/express_backend', (req, res) => {

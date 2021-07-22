@@ -25,18 +25,19 @@ function DownloadBar({ tracks, artists }) {
 
         await axios.post("http://localhost:5000/Mr-Logger", result, {headers})
             .then(function (response) {
+                setDownloading(false);
                 console.log(response);
             }).catch(function (error) {
                 console.log(error);
             });
-        setDownloading(false);
+        
         setDownloaded(true);
 
     };
 
 
     return (
-        <div className="download__bar" onClick={handleDownload}>
+        <div className="download__bar" onClick={() => { handleDownload() }}>
             <div className="left__child">
                 <h1>Download Bar</h1>
             </div>

@@ -22,22 +22,16 @@ function Playlists({ spotify, images, title, id }) {
         
     }
     useEffect(() => {
-        // console.log("songs from Playlists.js =>", songs)
+        
         setTracks(songs.map((song) => song.track.name))
         // eslint-disable-next-line array-callback-return
         setArtists(songs.map((song) => song.track.artists.map((artist) => artist.name)))
-        // songs.map((song) => song.track.artists.map((artist) => {
-        //     setValues([...values, artist.name]);
-        // }))
     }, [songs])
     
     return (
         <>
             <div className="playLists" onClick={onClickHandler}>
                 <div className="playLists__info">
-                    {/* {console.log("tracks => ", tracks)} */}
-                    {/* {console.log("values => ", values)} */}
-                    {/* {console.log("data => ", datas)} */}
                     {images[0] !== undefined ? <img src={images[0].url} alt="" /> : <img src="https://th.bing.com/th/id/OIP.khK65de-Bgy68D6JheAk3QHaHa?pid=ImgDet&rs=1" alt="" />}
                     
                     <h1 >{title}</h1>

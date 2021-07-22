@@ -12,6 +12,8 @@ from selenium.webdriver.support import expected_conditions as EC
 import youtube_dl
 
 
+ssl._create_default_https_context = ssl._create_unverified_context
+
 # path for chromedriver
 PATH = "/Users/tenzintashi/Downloads/chromedriver"
 
@@ -22,7 +24,6 @@ file_name = 'dataset.txt'
 
 def download(file_path, file_name, PATH):
     contains = ''
-    lst = []
     with open(os.path.join(file_path, file_name), 'r') as file_reader:
         contains = file_reader.read()
 
@@ -54,21 +55,25 @@ def download(file_path, file_name, PATH):
             if href is not None:
                 link = href
                 break
-        lst.append(link)
 
-    ssl._create_default_https_context = ssl._create_unverified_context
-    ydl_opts = {
-        'format': 'bestaudio/best',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }],
-    }
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'outtmpl': '%(title)s.%(ext)s',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
+        }
 
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        ydl.download(lst)
+        print(link)
+
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([link])
 
 
-download(file_path=file_path, file_name=file_name, PATH=PATH)
+try:
+    download(file_path=file_path, file_name=file_name, PATH=PATH)
+finally:
+    os.system("youtube-dl --rm-cache-dir")
 exit()
