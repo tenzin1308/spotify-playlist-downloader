@@ -20,7 +20,7 @@ function App() {
 
     if (_token) {
 
-      console.log(_token);
+      // console.log(_token);
       
       spotify.setAccessToken(_token);
 
@@ -41,7 +41,7 @@ function App() {
           // });
           console.log('Retrieved playlists', data);
         },function(err) {
-          console.log('Something went wrong!', err);
+          console.log('Something went wrong on App.js file !!!', err);
         });
       
       spotify.getMe().then((user) => {
