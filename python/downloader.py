@@ -58,7 +58,7 @@ def download(file_path, file_name, PATH):
 
         ydl_opts = {
             'format': 'bestaudio/best',
-            'outtmpl': '%(title)s.%(ext)s',
+            'outtmpl': '/Users/tenzintashi/Downloads/Music/ %(title)s - %(artist)s.%(ext)s',
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
