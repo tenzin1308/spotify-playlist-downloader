@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "build": "npm install && npm run build",
-    "start": "nodemon .server.js" 
+    "start": "nodemon server.js --ignore client "
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/tenzin1308/spotify-playlist-downloader#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1"
   },
   "devDependencies": {

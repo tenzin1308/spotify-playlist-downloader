@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useDataLayerValue } from './DataLayer';
+import axios from 'axios';
 import './Playlists.css'
 
 function Playlists({ spotify, images, title, id }) {
@@ -10,7 +11,7 @@ function Playlists({ spotify, images, title, id }) {
     const previousValues = useRef({ tracks, artists });
     
     const onClickHandler = () => {
-        spotify.getPlaylist(id, { limit: 300 }).then((response) =>
+        spotify.getPlaylist(id).then((response) =>
             dispatch({
                 type: "SET_SONGS",
                 songs: response.tracks.items,
@@ -19,7 +20,7 @@ function Playlists({ spotify, images, title, id }) {
         
     }
     useEffect(() => {
-        // console.log("songs from Playlists.js =>", songs[0])
+        console.log("songs from Playlists.js =>", songs)
         setTracks([songs.map((song) => song.track.name)])
         // eslint-disable-next-line array-callback-return
         setArtists([songs.map((song) => song.track.artists.map((artist) => artist.name)) ])
@@ -34,24 +35,38 @@ function Playlists({ spotify, images, title, id }) {
             previousValues.current.values !== artists
         ) {
             //your logic here
-            tracks.map((track, index) => {
-                // callBackendAPI(track, artists[index]);
-                console.log("track = ", track);
-                console.log("artist = ", artists[index]);
-
-            })
+            // tracks.forEach((track,index) => console.log("track => ", track, index));
+            // artists.forEach(artist => (console.log("artist => ", artist[i])));
+            for (var i = 0; i < Object.keys(songs).length; i++){
+                let _artist = artists[0][i]
+                let _song = tracks[0][i]
+                
+                let address = `http://localhost:5000/start_download?song=` + _song + `&artists=` + _artist
+                address = address.replace(/ /g, '+').replace('(','+').replace('!','+').replace(/\,/g,'+').replace(/\./g,'+').replace(')','+').replace("'",'+').replace(/\$/g,'+');
+                console.log(address)
+                callBackendAPI(address);
+            }
+            // console.log("len of artists = ", Object.keys(songs).length);
+            // artists.map((artist, index) => {
+            //     console.log("artist = ", artist);
+            // } )
             previousValues.current = { tracks, artists };
         }
     });
 
-    const callBackendAPI = async (tracks, artists) => {
-        const response = await fetch('/start_download');
-        const body = await response.json();
+    const callBackendAPI = async (address) => {
+        
+        await axios.get(address)
+            .then((req, res) => {
+                console.log("req => ", req.data);
+            }).catch(err => {
+                console.error("error => ", err);
+            });
 
-        if (response.status !== 200) {
-            throw Error(body.message) 
-        }
-        return body;
+        // if (response.status !== 200) {
+        //     throw Error(body.message) 
+        // }
+        // console.log(body);
     };
     
     return (
