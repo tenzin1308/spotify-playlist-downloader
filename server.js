@@ -1,6 +1,5 @@
 const express = require('express');
 const fs = require('fs');
-var bodyParser = require('body-parser');
 var cors = require('cors')
 var multer = require('multer');
 var upload = multer();
@@ -10,12 +9,15 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors())
+
 // for parsing application/json
-app.use(bodyParser.json());
+app.use(express.json());
 
 // for parsing application/xwww-
-app.use(bodyParser.urlencoded({ extended: true })); 
 //form-urlencoded
+app.use(express.urlencoded({
+  extended: true
+}));
 
 // for parsing multipart/form-data
 app.use(upload.array()); 
@@ -23,20 +25,19 @@ app.use(express.static('public'));
 
 
 app.post('/', function(req, res){
-   console.log(req.body);
+  //  console.log(req.body);
    res.send("recieved your request!");
 });
 
 app.post('/Mr-Logger', (request, response) => {
   fs.writeFile('temp.txt', JSON.stringify(request.body), function(err) {
     if (err) {
-      print(response);
       response.writeHead(500);
       response.end();
       return
     }
     response.writeHead(200);
-    response.write('gotcha');
+    response.write('received');
     response.end();
     return
   })

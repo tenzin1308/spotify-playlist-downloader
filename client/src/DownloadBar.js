@@ -10,10 +10,6 @@ function DownloadBar({ tracks, artists }) {
         
         var result = {};
         keys.forEach((key, i) => result[key] = values[i]);
-        console.log("results", result);
-        console.log("type of results", typeof (result));
-        // result = JSON.stringify(result)
-        // console.log("type of results", typeof (result));
 
         var headers = { 
             'Authorization': 'Bearer my-token',
@@ -28,16 +24,6 @@ function DownloadBar({ tracks, artists }) {
             });
 
     };
-
-    
-    // const handleDownload = async(result) => {
-    //     await axios.post("", result)
-    //         .then(function (response) {
-    //             console.log(response);
-    //         }).catch(function (error) {
-    //             console.log(error);
-    //         });
-    // }
 
 
     const [downloadReady, setDownloadReady] = useState(false);
