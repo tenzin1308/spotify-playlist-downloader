@@ -1,10 +1,17 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import './DownloadBar.css';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 function DownloadBar({ tracks, artists }) {
+    const [downloaded, setDownloaded] = useState(false);
+    const [downloading, setDownloading] = useState(false);
 
-    const handleDownload = async() => {
+
+    const handleDownload = async () => {
+        setDownloading(true);
         var keys = tracks;
         var values = artists;
         
@@ -22,15 +29,21 @@ function DownloadBar({ tracks, artists }) {
             }).catch(function (error) {
                 console.log(error);
             });
+        setDownloading(false);
+        setDownloaded(true);
 
     };
 
 
-    const [downloadReady, setDownloadReady] = useState(false);
-    const [downloading, setDownloading] = useState(false);
     return (
-        <div className="download__bars" onClick={handleDownload}>
-            <h1>Download Bar</h1>
+        <div className="download__bar" onClick={handleDownload}>
+            <div className="left__child">
+                <h1>Download Bar</h1>
+            </div>
+            <div className="right__child">
+                {!downloading && !downloaded ? <GetAppIcon /> : downloading ? <CircularProgress color="secondary" /> : <CheckCircleOutlineIcon color="primary"s/>}
+            </div>
+
         </div>
     )
 }

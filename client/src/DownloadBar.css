@@ -1,11 +1,34 @@
 .download__bar {
-  position: fixed;
   display: flex;
   justify-content: space-between;
+  justify-self: center;
   bottom: 0;
   padding: 20px;
+  margin: 5px 15px;
   height: 65px;
   width: 97%;
   background-color: #282828;
+  color: white;
   cursor: pointer;
+  border-radius: 20px;
+  align-items: center;
+}
+
+.left__child {
+  align-self: left;
+  width: 70%;
+}
+
+.left__child > h1 {
+  display: grid;
+  align-self: center;
+}
+
+.left__child > h1:hover {
+  color: green;
+}
+
+.right__child {
+  align-items: left;
+  width: 30%;
 }
