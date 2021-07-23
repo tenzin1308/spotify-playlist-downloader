@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import os
 import ssl
+import sys
 import json
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -69,14 +70,19 @@ def download(file_path, file_name, PATH):
             }
 
             print(link)
-
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([link])
+            try:
+                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    ydl.download([link])
+            except Exception as err:
+                sys.stderr.write(str(err))
         time.sleep(1)
 
 
 try:
     download(file_path=file_path, file_name=file_name, PATH=PATH)
+except Exception as exc:
+    print('[!!!] {err}'.format(err=exc))
+
 finally:
     os.system("youtube-dl --rm-cache-dir")
 exit()
