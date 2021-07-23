@@ -3,6 +3,7 @@ const fs = require('fs');
 var cors = require('cors')
 var multer = require('multer');
 var upload = multer();
+var {PythonShell} = require('python-shell')
 
 // python script requirment
 const { spawn } = require('child_process');
@@ -33,37 +34,59 @@ app.post('/', function(req, res){
 });
 
 app.post('/Mr-Logger', (request, response) => {
-  fs.writeFile('dataset.txt', JSON.stringify(request.body), function(err) {
+  response.setHeader('Connection', 'Transfer-Encoding'); 
+  response.setHeader('Content-Type', 'text/html; charset=utf-8');
+  response.write("downloading");
+  fs.writeFile('dataset.txt', JSON.stringify(request.body), function (err) {
     if (err) {
       response.writeHead(500);
       response.end();
       return
     }
     
-    const pyScript = spawn('python3', ['/Users/tenzintashi/Colz/Coding Files/spotify-playlist-downloader/python/downloader.py']);
+    var pyshell = new PythonShell('./python/downloader.py');
 
-    pyScript.stdout.on('data', (data) => {
-      console.log(`code successfully executed`);
-      // response.writeHead(200);
-      // response.write('received');
+    pyshell.on('message', function (message) {
+      console.log(message);
+    });
+
+    pyshell.end(function (err) {
+      if (err) {
+        throw err;
+      };
+      console.log('finished');
+      response.write("finished");
       response.end();
-      return
-        // console.log("data from getStat routs =>", data);
-        // res.json(JSON.stringify(data));
     });
 
-    pyScript.stderr.on('data', (data) => {
-      console.log(`stderr: ${data}`);
-      return
-    });
 
-    pyScript.on('close', (code) => {
-      console.log(`Exited with code: ${code}`);
-      return
-    });
+    //   const pyScript = spawn('python', ['/Users/tenzintashi/Colz/Coding Files/spotify-playlist-downloader/python/downloader.py']);
+
+    //   pyScript.stdout.on('data', (data) => {
+    //     console.log(`code successfully executed`);
+    //     // response.writeHead(200);
+    //     // response.write('received');
+      
+    //       // console.log("data from getStat routs =>", data);
+    //       // res.json(JSON.stringify(data));
+    //   });
+
+    //   pyScript.stderr.on('data', (data) => {
+    //     console.log(`stderr: ${data}`);
+    //     return
+    //   });
+
+    //   pyScript.on('close', (code) => {
+    //     console.log(`Exited with code: ${code}`);
+    //     return
+    //   });
     
-  })
-})
+    // })
+    // response.end();
+    // return
+
+  });
+  });
 
 
 

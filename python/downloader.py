@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import youtube_dl
+import time
 
 
 ssl._create_default_https_context = ssl._create_unverified_context
@@ -32,16 +33,16 @@ def download(file_path, file_name, PATH):
     songs = list(contains.keys())
     artists = list(contains.values())
 
+    # use headless Chrome as the browser
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+    driver = webdriver.Chrome(executable_path=PATH,
+                              options=chrome_options)
+
     for index in range(len(songs)):
         song = songs[index]
         artist = ' '.join(artists[index])
-
-        # use headless Chrome as the browser
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.binary_location = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
-        driver = webdriver.Chrome(executable_path=PATH,
-                                  options=chrome_options)
 
         # Website to access
         driver.get(
@@ -56,20 +57,22 @@ def download(file_path, file_name, PATH):
                 link = href
                 break
 
-        ydl_opts = {
-            'format': 'bestaudio/best',
-            'outtmpl': '/Users/tenzintashi/Downloads/Music/ %(title)s - %(artist)s.%(ext)s',
-            'postprocessors': [{
-                'key': 'FFmpegExtractAudio',
-                'preferredcodec': 'mp3',
-                'preferredquality': '192',
-            }],
-        }
+        if link is not None:
+            ydl_opts = {
+                'format': 'bestaudio/best',
+                'outtmpl': '/Users/tenzintashi/Downloads/Music/ %(title)s - %(artist)s.%(ext)s',
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '192',
+                }],
+            }
 
-        print(link)
+            print(link)
 
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([link])
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([link])
+        time.sleep(1)
 
 
 try:
